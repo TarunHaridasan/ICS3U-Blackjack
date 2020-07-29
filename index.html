@@ -1,0 +1,132 @@
+<!--
+	Tarun Haridasan, Aaron Korlall, Dhiren Patel, Dhruv Chand
+	2020-04-10
+	Game page
+	Contains the html for the game page
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Blackjack</title>
+		<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+		<link rel="stylesheet" type="text/css" href="jquery-ui.css">
+		<script type="text/javascript" src="code.js"></script>
+		<link rel="stylesheet" type="text/css" href="styles.css">
+	</head>
+	<body>
+		<!--Music-->
+		<!--<<Dhruv April 30, 2020 5pm Gathered and set up the sound effects-->
+		<audio id="winMusic" preload="auto">
+  			<source src="music/win.mp3" type="audio/mpeg"><!--winning sound effect-->
+  		</audio>
+  		<audio id="loseMusic" preload="auto">
+  			<source src="music/lose.mp3" type="audio/mpeg"><!--losing sound effect-->
+  		</audio>
+  		<audio id="gameoverMusic" preload="auto">
+  			<source src="music/gameover.mp3" type="audio/mpeg"><!--Game over sound effect-->
+  		</audio>
+  		<audio id="cardsMusic" preload="auto">
+  			<source src="music/cards.wav" type="audio/mpeg"><!--card shuffling sound effect-->
+  		</audio>
+  		<audio id="jazzMusic" preload="auto" loop="true">
+  			<source src="music/jazz.mp3" type="audio/mpeg"><!--background Jazz music-->
+  		</audio>
+		<!--Homescreen: Asks for name and initiates the game-->
+		<div id="homeScreen">
+			<h1 id="titleName">Blackjack!</h1>
+			<div id="nameWrapper" class="horizontalCenter verticalCenter">
+				<input type="text" id="txtName" placeholder="Enter your name here">
+			</div>
+			<!--<<Aaron May 1, 2020 11pm Found the images of the avatars and placed them on the screen-->
+			<div id="avatarWrapper" class="horizontalCenter">
+				<input id="avatar1" type="radio" name="avatar" value="avatar1">
+				<img class="avatarImg" id="avatar1Img" src="images/avatar/avatar1.PNG">
+				<input id="avatar2" type="radio" name="avatar" value="avatar2">
+				<img class="avatarImg" id="avatar2Img" src="images/avatar/avatar2.PNG">
+				<input id="avatar3" type="radio" name="avatar" value="avatar3">
+				<img class="avatarImg" id="avatar3Img" src="images/avatar/avatar3.PNG">
+				<input id="avatar4" type="radio" name="avatar" value="avatar4">
+				<img class="avatarImg" id="avatar4Img" src="images/avatar/avatar4.PNG">
+				<br>
+				<input id="avatar5" type="radio" name="avatar" value="avatar5">
+				<img class="avatarImg" id="avatar5Img" src="images/avatar/avatar5.PNG">
+				<input id="avatar6" type="radio" name="avatar" value="avatar6">
+				<img class="avatarImg" id="avatar6Img" src="images/avatar/avatar6.PNG">
+				<input id="avatar7" type="radio" name="avatar" value="avatar7">
+				<img class="avatarImg" id="avatar7Img" src="images/avatar/avatar7.PNG">
+				<input id="avatar8" type="radio" name="avatar" value="avatar8">
+				<img class="avatarImg" id="avatar8Img" src="images/avatar/avatar8.PNG">
+			</div>
+			<button id="btnStart" class="horizontalCenter">Go!</button>
+			<div id="dialog" title="Error">
+				<p>Enter a name and select an avatar.</p>
+			</div>
+			
+		</div>
+		<!--<<Tarun April 20, 2020 4pm Set up the main components of the GUI and linked to JQuery-->
+		<div id="gameScreen">
+			<!-- Screen that you place the bet -->
+			<div id="betScreen" class="">
+				<h2>Enter your Bet!</h2>
+				<input type="text" id="txtBet" onkeypress="return isNumber(event.key)">
+				<button id="btnBet" disabled>Bet!</button>
+			</div>
+			<!-- These divs house player's avatar, and their stats -->
+			<div id="playerInfoScreen">
+				<div id="playerAvatar"></div>	
+				<div id="name">
+					<label type="text" id="playerName"></label>
+				</div>	
+			</div>		
+			<div id="gameInfoScreen">										
+				<img src="images/money.png" id="icon">
+				<label type="text" id="lblUserBalance">Balance: $100</label>
+				<br>
+				<img src="images/bet.png" id="icon">
+				<label type="text" id="lblUserBet">Bet: $</label>
+			</div>
+			<!-- Screen that houses the cards-->
+			<div id="cardScreen">
+				<h2>Dealer's Hand</h1>
+				<div id="dealerCards">
+					<img src="images/cards/card55.JPG">			
+					<img src="images/cards/card55.JPG">		
+				</div>
+				<br><br>			
+				<h2>Your Hand</h1>
+				<div id="userCards">
+					<img src="images/cards/card55.JPG">
+					<img src="images/cards/card55.JPG">
+				</div>						
+				<div id="userSum">
+					<label class="lblSum" id="lbluserSum">0</label>	<!--Could not be camel cased due to restructions in functions-->
+				</div>
+				<div id="dealerSum">
+					<label class="lblSum" id="lbldealerSum">0</label>
+				</div>
+				<br>		
+			</div>
+			<!-- Holds the buttons -->
+			<div id="decisionScreen">
+				<div id="stayWrapper">
+					<button id="btnStay" disabled>Stay</button>
+				</div>
+				<div id="hitWrapper">
+					<button id="btnHit" disabled>Hit</button>
+				</div>
+				<div id="doubleWrapper">
+					<button id="btnDouble" disabled>Double</button>
+				</div>	
+			</div>
+			<!-- Houses the music toggle button -->
+			<div id="toggleMusicScreen"></div>
+			<!-- Holds the Win, Lose, Tie, and Game Over labels -->
+			<div id="endGameScreen" class="horizontalCenter">
+				<label id='lblEndGame'></label>
+				<br>
+				<button id="btnPlayAgain" class='horizontalCenter'>Play again?</button>
+			</div>			
+		</div>		
+	</body>
+</html>
